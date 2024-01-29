@@ -2,8 +2,11 @@ package db
 
 import (
 	"book-inventory/models"
+	_ "database/sql"
 	"log"
 	"os"
+
+	_ "github.com/lib/pq"
 
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
@@ -17,8 +20,9 @@ func InitDB() *gorm.DB {
 	connect := os.Getenv("POSTGRES_URL")
 	db, err := gorm.Open("postgres", connect)
 	if err != nil {
-		log.Fatal("Error connecting to database")
+		log.Fatal(err)
 	}
+	Migrate(db)
 	return db
 }
 
